@@ -1,0 +1,86 @@
+cabal-version: 3.4
+name: neohaskell-starter
+version: 0.1.0
+synopsis: NeoHaskell starter template
+description: Opinionated starter template for event-sourced NeoHaskell applications.
+homepage: https://neohaskell.org
+license: Apache-2.0
+author: Your Name
+maintainer: your.email@example.com
+category: Development
+build-type: Simple
+
+common common_cfg
+  ghc-options:
+    -Wall
+    -Wno-orphans
+    -threaded
+    -fno-warn-partial-type-signatures
+    -fno-warn-name-shadowing
+    -Werror
+
+  default-extensions:
+    ApplicativeDo
+    BlockArguments
+    DataKinds
+    DeriveDataTypeable
+    DuplicateRecordFields
+    ImportQualifiedPost
+    ImpredicativeTypes
+    NamedFieldPuns
+    NoFieldSelectors
+    NoImplicitPrelude
+    OverloadedLabels
+    OverloadedLists
+    OverloadedRecordDot
+    OverloadedStrings
+    PackageImports
+    PartialTypeSignatures
+    QualifiedDo
+    QuasiQuotes
+    Strict
+    TemplateHaskell
+    TypeApplications
+    TypeFamilies
+    TypeOperators
+
+  build-depends:
+    base,
+    nhcore,
+    nhintegrations,
+    aeson,
+    bytestring,
+    text,
+    uuid
+
+library
+  import: common_cfg
+  exposed-modules:
+    App
+    Starter.Config
+    -- Counter bounded context
+    Starter.Counter.Core
+    Starter.Counter.Entity
+    Starter.Counter.Event
+    Starter.Counter.Service
+    -- Events (one per file)
+    Starter.Counter.Events.CounterCreated
+    Starter.Counter.Events.CounterIncremented
+    Starter.Counter.Events.CounterDecremented
+    -- Commands (one per file)
+    Starter.Counter.Commands.CreateCounter
+    Starter.Counter.Commands.IncrementCounter
+    Starter.Counter.Commands.DecrementCounter
+    -- Queries (read models)
+    Starter.Counter.Queries.CounterView
+  hs-source-dirs: src
+  default-language: GHC2021
+
+executable neohaskell-starter
+  import: common_cfg
+  main-is: Launcher.hs
+  build-depends:
+    base,
+    neohaskell-starter
+  hs-source-dirs: launcher
+  default-language: GHC2021
