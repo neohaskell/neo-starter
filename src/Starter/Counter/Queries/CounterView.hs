@@ -29,6 +29,9 @@ instance Json.ToJSON CounterView
 instance Json.FromJSON CounterView
 
 
+instance ToSchema CounterView
+
+
 canAccess :: Maybe UserClaims -> Maybe QueryAuthError
 canAccess = publicAccess
 

@@ -1,9 +1,11 @@
 module App (app) where
 
 import Core
+import Maybe qualified
+import Path qualified
 import Service.Application (Application)
 import Service.Application qualified as Application
-import Service.EventStore.InMemory qualified as InMemory
+import Service.EventStore.Simple (SimpleEventStore (..))
 import Service.Transport.Web qualified as WebTransport
 import Starter.Config (StarterConfig (..))
 import Starter.Counter.Queries.CounterView (CounterView)
@@ -11,6 +13,7 @@ import Starter.Counter.Service qualified as Counter
 
 -- To switch to Postgres, see the commented block below.
 -- import Service.EventStore.Postgres (PostgresEventStore (..))
+-- (and remove the SimpleEventStore import above)
 
 
 -- | The application.
@@ -22,7 +25,7 @@ app :: Application
 app =
   Application.new
     |> Application.withConfig @StarterConfig
-    |> Application.withEventStore (\(_ :: StarterConfig) -> InMemory.new)
+    |> Application.withEventStore (\(_ :: StarterConfig) -> SimpleEventStore {basePath = Path.fromText ".neo/events" |> Maybe.getOrDie, persistent = False})
     -- SWITCH TO POSTGRES:
     --   1. Comment out the `withEventStore` line above.
     --   2. Uncomment `withEventStore makePostgresConfig` below.
