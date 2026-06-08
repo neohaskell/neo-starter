@@ -8,7 +8,7 @@ module Starter.Counter.Queries.CounterView (
 
 import Core
 import Json qualified
-import Service.Query.Auth (QueryAuthError, UserClaims, publicAccess, publicView)
+import Service.AccessControl (AccessError, UserClaims, publicAccess, publicView)
 import Service.Query.TH (deriveQuery)
 import Starter.Counter.Core (CounterEntity (..))
 
@@ -32,11 +32,11 @@ instance Json.FromJSON CounterView
 instance ToSchema CounterView
 
 
-canAccess :: Maybe UserClaims -> Maybe QueryAuthError
+canAccess :: Maybe UserClaims -> Maybe AccessError
 canAccess = publicAccess
 
 
-canView :: Maybe UserClaims -> CounterView -> Maybe QueryAuthError
+canView :: Maybe UserClaims -> CounterView -> Maybe AccessError
 canView = publicView
 
 
